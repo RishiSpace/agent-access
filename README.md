@@ -144,6 +144,10 @@ app = create_app(auth_token="mytoken")
 pip install -e ".[dev]"
 ```
 
+## For AI Agents
+
+See **[AGENTS.md](AGENTS.md)** for detailed instructions written specifically for AI agents and LLMs on how to use this tool effectively (authentication, request formats, response handling, best practices, and safety guidelines).
+
 ## License
 
 MIT
