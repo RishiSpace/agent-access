@@ -97,8 +97,8 @@ jobs:
         # 5. Add Trusted Publisher on PyPI (see comment at top of this file).
         # 6. Revert this change (remove the with: block) and push again.
         #
-        # with:
-        #   password: ${{ secrets.PYPI_API_TOKEN }}
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
   publish-testpypi:
     name: Publish to TestPyPI
