@@ -1,10 +1,11 @@
 name: Publish to PyPI
 
 # This workflow:
-# - Builds the package on every push / pull request (for CI validation)
-# - Publishes to PyPI on GitHub releases (or manual dispatch)
+# - On every push/PR: just builds the package (CI check, no publishing)
+# - On release or version tag push: builds + publishes to PyPI using PYPI_API_TOKEN
+# - Manual dispatch: lets you choose PyPI or TestPyPI
 #
-# It uses the repository secret PYPI_API_TOKEN (configured in your repo).
+# Publishing jobs are skipped on normal commits (this is intentional).
 
 on:
   push:
@@ -50,8 +51,15 @@ jobs:
     name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    # This job only runs on releases or manual dispatch (never on regular commits)
-    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish-to-pypi == 'true')
+    # Publishing only happens on:
+    # - GitHub Releases
+    # - Pushing a version tag (e.g. v0.2.0)
+    # - Manual workflow dispatch with "Publish to real PyPI" = true
+    # It is intentionally skipped on normal commits/PRs.
+    if: >-
+      github.event_name == 'release' ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.publish-to-pypi == 'true')
 
     steps:
       - name: Download built distributions
@@ -70,7 +78,7 @@ jobs:
     name: Publish to TestPyPI
     needs: build
     runs-on: ubuntu-latest
-    # This job only runs on manual dispatch (never on regular commits or releases)
+    # This only runs via manual dispatch (when you choose not to publish to real PyPI)
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.publish-to-pypi != 'true'
 
     steps:
