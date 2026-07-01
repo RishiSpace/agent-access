@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "A simple HTTP server that lets AI agents (or curl) send shell commands to be executed with elevated privileges and receive the output."
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Agent Access"}
 ]
@@ -16,7 +16,6 @@ keywords = ["agent", "ai", "command", "execution", "server", "remote"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -38,8 +37,9 @@ dev = [
 agent-access = "agent_access.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/example/agent-access"
-Repository = "https://github.com/example/agent-access"
+Homepage = "https://github.com/RishiSpace/agent-access"
+Repository = "https://github.com/RishiSpace/agent-access"
+Issues = "https://github.com/RishiSpace/agent-access/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
