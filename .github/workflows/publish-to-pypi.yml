@@ -1,9 +1,14 @@
 name: Publish to PyPI
 
-# This workflow publishes the package to PyPI.
-# It uses the repository secret PYPI_API_TOKEN (you have this configured).
+# This workflow:
+# - Builds the package on every push / pull request (for CI validation)
+# - Publishes to PyPI on GitHub releases (or manual dispatch)
+#
+# It uses the repository secret PYPI_API_TOKEN (configured in your repo).
 
 on:
+  push:
+  pull_request:
   release:
     types: [published]
   workflow_dispatch:
@@ -45,7 +50,7 @@ jobs:
     name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    # Only run this job for actual releases or when manually chosen
+    # This job only runs on releases or manual dispatch (never on regular commits)
     if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish-to-pypi == 'true')
 
     steps:
@@ -65,7 +70,7 @@ jobs:
     name: Publish to TestPyPI
     needs: build
     runs-on: ubuntu-latest
-    # Only run on manual dispatch when user chooses TestPyPI
+    # This job only runs on manual dispatch (never on regular commits or releases)
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.publish-to-pypi != 'true'
 
     steps:
