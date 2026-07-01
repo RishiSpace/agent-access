@@ -2,16 +2,25 @@ name: Publish to PyPI
 
 # This workflow:
 # - On every push/PR: just builds the package (CI check, no publishing)
-# - Publishes using Trusted Publishing (OIDC) on releases, version tags, or manual dispatch
+# - Publishes using Trusted Publishing (OIDC) only on releases or manual dispatch
 #
-# First-time setup (bootstrap):
-# 1. The PyPI project "AI-SystemAssist" must be created by an initial upload.
-# 2. Temporarily add the password line in the publish step (see below).
-# 3. Create a release or manually trigger the workflow.
-# 4. Once published, go to https://pypi.org/manage/project/AI-SystemAssist/settings/publishing/
-#    and add the GitHub Trusted Publisher (owner=RishiSpace, repo=agent-access, workflow=publish-to-pypi.yml).
-# 5. Remove the password line from the workflow.
-# 6. Future publishes will use OIDC automatically.
+# CRITICAL BOOTSTRAP NOTE:
+# You CANNOT configure Trusted Publishing until the PyPI project exists.
+# The project "AI-SystemsAssist" does not exist yet.
+#
+# To do the FIRST publish (which creates the project):
+# 1. Temporarily uncomment the password line in the "Publish to PyPI" step below.
+# 2. Commit + push.
+# 3. Create a GitHub Release (or use workflow_dispatch with "publish-to-pypi: true").
+# 4. Once it succeeds on PyPI, the project will exist.
+# 5. Go to https://pypi.org/manage/project/AI-SystemsAssist/settings/publishing/
+#    and add GitHub Trusted Publisher:
+#      - Owner: RishiSpace
+#      - Repository: agent-access
+#      - Workflow: publish-to-pypi.yml
+#      (leave Environment blank)
+# 6. Remove the password line from the workflow.
+# 7. Future releases will use pure OIDC (no token needed).
 
 on:
   push:
@@ -61,12 +70,10 @@ jobs:
       id-token: write   # Required for Trusted Publishing (OIDC)
     # Publishing only happens on:
     # - GitHub Releases
-    # - Pushing a version tag (e.g. v0.2.0)
     # - Manual workflow dispatch with "Publish to real PyPI" = true
-    # It is intentionally skipped on normal commits/PRs.
+    # It is intentionally skipped on normal commits/PRs (build still runs).
     if: >-
       github.event_name == 'release' ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')) ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.publish-to-pypi == 'true')
 
     steps:
@@ -78,10 +85,20 @@ jobs:
 
       - name: Publish to PyPI using Trusted Publishing
         uses: pypa/gh-action-pypi-publish@release/v1
-        # BOOTSTRAP (first publish only):
-        # Uncomment the line below so the first upload creates the project on PyPI.
-        # After it succeeds + you add the Trusted Publisher on PyPI, remove this line.
-        # password: ${{ secrets.PYPI_API_TOKEN }}
+        # BOOTSTRAP ONLY (for the very first publish):
+        # Because the project "AI-SystemsAssist" does not exist on PyPI yet,
+        # you must use a token once to CREATE it.
+        #
+        # STEPS:
+        # 1. Uncomment the three lines below.
+        # 2. Push this change.
+        # 3. Create a GitHub Release (or Run workflow manually with publish-to-pypi=true).
+        # 4. After success, the project will exist on PyPI.
+        # 5. Add Trusted Publisher on PyPI (see comment at top of this file).
+        # 6. Revert this change (remove the with: block) and push again.
+        #
+        # with:
+        #   password: ${{ secrets.PYPI_API_TOKEN }}
 
   publish-testpypi:
     name: Publish to TestPyPI
@@ -103,5 +120,5 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
-        # For first TestPyPI upload, you can temporarily add:
+        # For first TestPyPI upload (optional), temporarily add:
         # password: ${{ secrets.TEST_PYPI_API_TOKEN || secrets.PYPI_API_TOKEN }}
