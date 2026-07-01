@@ -1,19 +1,19 @@
 # AGENTS.md
 
-**Instructions for AI Agents** on how to use the `agent-access` tool.
+**Instructions for AI Agents** on how to use the `AI-SystemAssist` tool.
 
 This file tells you (the AI agent) exactly how to interact with the machine through this HTTP command execution server.
 
 ## Purpose
 
-`agent-access` lets you run shell commands on the host machine and receive structured output.  
+`AI-SystemAssist` lets you run shell commands on the host machine and receive structured output.  
 It is designed specifically so that AI agents / LLMs can perform real actions (file operations, package management, debugging, etc.) via simple HTTP calls.
 
 ## Prerequisites
 
 Before using the tool, the following must be true:
 
-- The `agent-access` server is running on the target machine.
+- The `AI-SystemAssist` server is running on the target machine.
 - You have been given:
   - The base URL (e.g. `http://127.0.0.1:8765` or a remote address)
   - A valid auth token
@@ -197,9 +197,9 @@ curl -X POST -d 'df -h' \
 If you need to tell a human operator how to start the server for you:
 
 ```bash
-sudo AGENT_ACCESS_TOKEN="super-secret-token-123" \
-     AGENT_ACCESS_PORT=8765 \
-     agent-access
+sudo AI_SYSTEMASSIST_TOKEN="super-secret-token-123" \
+     AI_SYSTEMASSIST_PORT=8765 \
+     ai-systemassist
 ```
 
 ## Troubleshooting

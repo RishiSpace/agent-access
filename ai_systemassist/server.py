@@ -1,5 +1,5 @@
 """
-agent-access server.
+AI-SystemAssist server.
 
 Runs an HTTP server that accepts commands via simple HTTP requests (JSON or plain text),
 executes them (intended to be run as root/admin), and returns stdout/stderr + return code.
@@ -193,7 +193,7 @@ def create_app(auth_token: str, allow_cors: bool = False) -> Flask:
     @app.route("/", methods=["GET"])
     def index():
         return jsonify({
-            "name": "agent-access",
+            "name": "AI-SystemAssist",
             "endpoints": {
                 "POST /execute": "Run a command. Auth required.",
                 "GET /health": "Health check",
@@ -220,16 +220,16 @@ def run_server(
         # Generate a session token if none provided
         import secrets
         auth_token = secrets.token_urlsafe(24)
-        print(f"[agent-access] No token provided. Generated one for this session:")
-        print(f"  AGENT_ACCESS_TOKEN={auth_token}")
+        print(f"[ai-systemassist] No token provided. Generated one for this session:")
+        print(f"  AI_SYSTEMASSIST_TOKEN={auth_token}")
         print("  Use it in requests or set the env var next time.")
 
     app = create_app(auth_token=auth_token, allow_cors=allow_cors)
 
-    print(f"[agent-access] Starting server on http://{host}:{port}")
-    print(f"[agent-access] Auth token required. Send via X-Agent-Token header or ?token= param")
-    print(f"[agent-access] Example: curl -X POST -d 'whoami' -H 'X-Agent-Token: {auth_token}' http://{host}:{port}/execute")
-    print(f"[agent-access] WARNING: Commands run with the privileges of the server process (run with sudo for root).")
+    print(f"[ai-systemassist] Starting server on http://{host}:{port}")
+    print(f"[ai-systemassist] Auth token required. Send via X-Agent-Token header or ?token= param")
+    print(f"[ai-systemassist] Example: curl -X POST -d 'whoami' -H 'X-Agent-Token: {auth_token}' http://{host}:{port}/execute")
+    print(f"[ai-systemassist] WARNING: Commands run with the privileges of the server process (run with sudo for root).")
 
     # Use Flask development server (fine for this use case)
     app.run(host=host, port=port, debug=False, use_reloader=False, threaded=True)

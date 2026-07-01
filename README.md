@@ -1,4 +1,4 @@
-# agent-access
+# AI-SystemAssist
 
 A tiny, easy-to-use HTTP server that lets AI agents (or humans with curl/wget) send shell commands to be executed on the machine and receive the output back.
 
@@ -31,16 +31,16 @@ pip install .
 
 ```bash
 # Start the server (will generate a token if none provided)
-sudo agent-access
+sudo ai-systemassist
 
 # Or with explicit token and options
-AGENT_ACCESS_TOKEN=my-super-secret-token agent-access --host 127.0.0.1 --port 8765
+AI_SYSTEMASSIST_TOKEN=my-super-secret-token ai-systemassist --host 127.0.0.1 --port 8765
 ```
 
 Environment variables (also supported):
-- `AGENT_ACCESS_TOKEN`
-- `AGENT_ACCESS_HOST`
-- `AGENT_ACCESS_PORT`
+- `AI_SYSTEMASSIST_TOKEN`
+- `AI_SYSTEMASSIST_HOST`
+- `AI_SYSTEMASSIST_PORT`
 
 ## Usage from curl / wget (very easy)
 
@@ -111,9 +111,9 @@ Auth can be sent as:
 ## Running as Admin / Root
 
 ```bash
-sudo agent-access --token "super-secret"
+sudo ai-systemassist --token "super-secret"
 # or
-sudo -E agent-access   # preserves env vars including AGENT_ACCESS_TOKEN
+sudo -E ai-systemassist   # preserves env vars including AI_SYSTEMASSIST_TOKEN
 ```
 
 All commands will then run as root.
@@ -121,7 +121,7 @@ All commands will then run as root.
 ## Configuration / CLI
 
 ```bash
-agent-access --help
+ai-systemassist --help
 ```
 
 Options:
@@ -132,7 +132,7 @@ Options:
 ## Python usage (advanced)
 
 ```python
-from agent_access.server import create_app, run_server
+from ai_systemassist.server import create_app, run_server
 
 app = create_app(auth_token="mytoken")
 # then run with your own WSGI server if desired (gunicorn, waitress, etc.)

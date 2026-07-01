@@ -2,10 +2,16 @@ name: Publish to PyPI
 
 # This workflow:
 # - On every push/PR: just builds the package (CI check, no publishing)
-# - On release or version tag push: builds + publishes to PyPI using PYPI_API_TOKEN
-# - Manual dispatch: lets you choose PyPI or TestPyPI
+# - Publishes using Trusted Publishing (OIDC) on releases, version tags, or manual dispatch
 #
-# Publishing jobs are skipped on normal commits (this is intentional).
+# First-time setup (bootstrap):
+# 1. The PyPI project "AI-SystemAssist" must be created by an initial upload.
+# 2. Temporarily add the password line in the publish step (see below).
+# 3. Create a release or manually trigger the workflow.
+# 4. Once published, go to https://pypi.org/manage/project/AI-SystemAssist/settings/publishing/
+#    and add the GitHub Trusted Publisher (owner=RishiSpace, repo=agent-access, workflow=publish-to-pypi.yml).
+# 5. Remove the password line from the workflow.
+# 6. Future publishes will use OIDC automatically.
 
 on:
   push:
@@ -51,6 +57,8 @@ jobs:
     name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # Required for Trusted Publishing (OIDC)
     # Publishing only happens on:
     # - GitHub Releases
     # - Pushing a version tag (e.g. v0.2.0)
@@ -68,16 +76,19 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Publish to PyPI
+      - name: Publish to PyPI using Trusted Publishing
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          # Uses your Repository secret (Settings → Secrets and variables → Actions)
-          password: ${{ secrets.PYPI_API_TOKEN }}
+        # BOOTSTRAP (first publish only):
+        # Uncomment the line below so the first upload creates the project on PyPI.
+        # After it succeeds + you add the Trusted Publisher on PyPI, remove this line.
+        # password: ${{ secrets.PYPI_API_TOKEN }}
 
   publish-testpypi:
     name: Publish to TestPyPI
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # Required for Trusted Publishing (OIDC) on TestPyPI
     # This only runs via manual dispatch (when you choose not to publish to real PyPI)
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.publish-to-pypi != 'true'
 
@@ -88,8 +99,9 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Publish to TestPyPI
+      - name: Publish to TestPyPI using Trusted Publishing
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
-          password: ${{ secrets.TEST_PYPI_API_TOKEN || secrets.PYPI_API_TOKEN }}
+        # For first TestPyPI upload, you can temporarily add:
+        # password: ${{ secrets.TEST_PYPI_API_TOKEN || secrets.PYPI_API_TOKEN }}

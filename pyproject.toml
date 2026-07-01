@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-access"
+name = "AI-SystemAssist"
 version = "0.1.0"
 description = "A simple HTTP server that lets AI agents (or curl) send shell commands to be executed with elevated privileges and receive the output."
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
 authors = [
-    {name = "Agent Access"}
+    {name = "AI SystemAssist"}
 ]
 keywords = ["agent", "ai", "command", "execution", "server", "remote"]
 classifiers = [
@@ -34,7 +34,7 @@ dev = [
 ]
 
 [project.scripts]
-agent-access = "agent_access.cli:main"
+ai-systemassist = "ai_systemassist.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/RishiSpace/agent-access"
@@ -43,4 +43,4 @@ Issues = "https://github.com/RishiSpace/agent-access/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["agent_access*"]
+include = ["ai_systemassist*"]
