@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs • AI-SystemAssist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .docs-container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .nav-link {
+            transition: all 0.1s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #67e8f9;
+            background-color: rgba(103, 232, 249, 0.1);
+        }
+
+        .doc-section {
+            scroll-margin-top: 80px;
+        }
+
+        .code-block {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .prose h1, .prose h2, .prose h3 {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0f] text-gray-200">
+    <!-- Top Nav -->
+    <nav class="border-b border-white/10 bg-[#0a0a0f]/90 backdrop-blur-lg sticky top-0 z-50">
+        <div class="max-w-screen-xl mx-auto px-8">
+            <div class="flex justify-between items-center h-14">
+                <div class="flex items-center gap-x-3">
+                    <a href="../index.html" class="flex items-center gap-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-teal-400 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-robot text-[#0a0a0f] text-xl font-bold"></i>
+                        </div>
+                        <span class="font-display text-xl font-semibold tracking-tight">AI-SystemAssist</span>
+                    </a>
+                    <span class="text-sm px-2.5 py-0.5 bg-white/5 rounded-2xl text-gray-400">Docs</span>
+                </div>
+                
+                <div class="flex items-center gap-x-4 text-sm">
+                    <a href="../index.html" class="hover:text-white transition-colors">Home</a>
+                    <a href="https://pypi.org/project/AI-SystemAssist/" target="_blank" class="px-4 py-1.5 bg-white text-[#0a0a0f] rounded-3xl text-xs font-semibold flex items-center gap-x-1.5 hover:bg-white/90">
+                        <span>PyPI</span>
+                    </a>
+                    <a href="https://github.com/RishiSpace/agent-access" target="_blank" class="flex items-center gap-x-1.5 text-gray-400 hover:text-white">
+                        <i class="fab fa-github"></i>
+                        <span class="hidden sm:inline">GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-screen-xl mx-auto docs-container">
+        <!-- Sidebar -->
+        <div class="sidebar hidden lg:block border-r border-white/10 bg-[#0a0a0f] p-8 pr-6 text-sm overflow-y-auto">
+            <div class="space-y-8">
+                <!-- Introduction -->
+                <div>
+                    <div class="text-xs font-semibold text-gray-400 tracking-widest mb-2 px-3">GETTING STARTED</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#introduction" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Introduction</a></li>
+                        <li><a href="#installation" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Installation</a></li>
+                        <li><a href="#quick-start" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Quick Start</a></li>
+                    </ul>
+                </div>
+
+                <!-- Configuration -->
+                <div>
+                    <div class="text-xs font-semibold text-gray-400 tracking-widest mb-2 px-3">CONFIGURATION</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#starting-the-server" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Starting the Server</a></li>
+                        <li><a href="#cli-options" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">CLI Options</a></li>
+                        <li><a href="#environment-variables" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Environment Variables</a></li>
+                        <li><a href="#running-as-admin" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Running as Admin</a></li>
+                    </ul>
+                </div>
+
+                <!-- Using the API -->
+                <div>
+                    <div class="text-xs font-semibold text-gray-400 tracking-widest mb-2 px-3">USING THE API</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#authentication" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Authentication</a></li>
+                        <li><a href="#sending-commands" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Sending Commands</a></li>
+                        <li class="pl-4"><a href="#raw-body" class="nav-link block px-3 py-1 rounded-xl text-gray-300 hover:bg-white/5 text-xs">Raw Body</a></li>
+                        <li class="pl-4"><a href="#json-body" class="nav-link block px-3 py-1 rounded-xl text-gray-300 hover:bg-white/5 text-xs">JSON Body</a></li>
+                        <li class="pl-4"><a href="#query-params" class="nav-link block px-3 py-1 rounded-xl text-gray-300 hover:bg-white/5 text-xs">Query Parameters</a></li>
+                        <li><a href="#response-format" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Response Format</a></li>
+                    </ul>
+                </div>
+
+                <!-- Advanced -->
+                <div>
+                    <div class="text-xs font-semibold text-gray-400 tracking-widest mb-2 px-3">ADVANCED</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#security" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Security Best Practices</a></li>
+                        <li><a href="#integration" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Agent Integration</a></li>
+                        <li><a href="#troubleshooting" class="nav-link block px-3 py-1.5 rounded-xl text-gray-300 hover:bg-white/5">Troubleshooting</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="max-w-3xl px-8 py-10 lg:pr-12">
+            <!-- Introduction -->
+            <section id="introduction" class="doc-section mb-16">
+                <h1 class="text-4xl font-display font-semibold tracking-tight mb-3">Introduction</h1>
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    <strong>AI-SystemAssist</strong> is a lightweight HTTP server designed specifically for AI agents and LLMs. 
+                    It allows agents to execute real shell commands on a machine and receive structured, machine-readable output.
+                </p>
+                <p class="mt-4 text-gray-400">
+                    Whether you're building autonomous agents, giving LLMs tool-use capabilities, or just want a simple way for scripts 
+                    to run commands remotely, AI-SystemAssist provides a secure and easy-to-use interface.
+                </p>
+            </section>
+
+            <!-- Installation -->
+            <section id="installation" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Installation</h2>
+                
+                <div class="bg-[#111113] border border-white/10 rounded-2xl p-5 mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="text-xs text-gray-400">TERMINAL</div>
+                        <button onclick="copyToClipboard(this, 'pip install AI-SystemAssist')" 
+                                class="text-xs px-3 py-1 bg-white/5 hover:bg-white/10 rounded-xl flex items-center gap-x-1.5">
+                            <i class="fas fa-copy text-xs"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                    <code class="font-mono text-emerald-300">pip install AI-SystemAssist</code>
+                </div>
+                
+                <p class="text-gray-400">Requires Python 3.11 or higher.</p>
+            </section>
+
+            <!-- Quick Start -->
+            <section id="quick-start" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Quick Start</h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-semibold mb-2">1. Start the server</h4>
+                        <div class="bg-[#111113] border border-white/10 rounded-2xl p-5">
+                            <pre class="font-mono text-sm text-emerald-300">ai-systemassist</pre>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">The server will start on <code class="font-mono">http://127.0.0.1:8765</code> and generate a token.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold mb-2">2. Send a command</h4>
+                        <div class="bg-[#111113] border border-white/10 rounded-2xl p-5">
+                            <pre class="font-mono text-sm">curl -X POST -d 'whoami' \
+  -H "X-Agent-Token: YOUR_TOKEN" \
+  http://127.0.0.1:8765/execute</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Starting the Server -->
+            <section id="starting-the-server" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Starting the Server</h2>
+                <p class="mb-4">Run the server using the installed CLI:</p>
+                
+                <div class="bg-[#111113] border border-white/10 rounded-2xl p-5 mb-4">
+                    <code class="font-mono text-emerald-300">ai-systemassist</code>
+                </div>
+                
+                <p class="text-sm text-gray-400">By default it binds to 127.0.0.1:8765 and generates a random auth token.</p>
+            </section>
+
+            <!-- CLI Options -->
+            <section id="cli-options" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">CLI Options</h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="text-gray-400 text-xs">
+                            <tr>
+                                <th class="text-left pb-2 pr-4">Flag</th>
+                                <th class="text-left pb-2">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/10">
+                            <tr>
+                                <td class="py-3 pr-4 font-mono">--host</td>
+                                <td class="py-3">Host to bind to (default: 127.0.0.1)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 pr-4 font-mono">--port, -p</td>
+                                <td class="py-3">Port to listen on (default: 8765)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 pr-4 font-mono">--token</td>
+                                <td class="py-3">Auth token (generates one if omitted)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 pr-4 font-mono">--allow-cors</td>
+                                <td class="py-3">Enable CORS headers (for local dev)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Environment Variables -->
+            <section id="environment-variables" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Environment Variables</h2>
+                
+                <div class="space-y-3">
+                    <div class="flex items-start gap-4 bg-[#111113] border border-white/10 rounded-2xl p-4">
+                        <code class="font-mono bg-black/50 px-2 py-1 rounded text-xs">AI_SYSTEMASSIST_TOKEN</code>
+                        <span class="text-sm">Auth token (recommended for production)</span>
+                    </div>
+                    <div class="flex items-start gap-4 bg-[#111113] border border-white/10 rounded-2xl p-4">
+                        <code class="font-mono bg-black/50 px-2 py-1 rounded text-xs">AI_SYSTEMASSIST_HOST</code>
+                        <span class="text-sm">Host interface</span>
+                    </div>
+                    <div class="flex items-start gap-4 bg-[#111113] border border-white/10 rounded-2xl p-4">
+                        <code class="font-mono bg-black/50 px-2 py-1 rounded text-xs">AI_SYSTEMASSIST_PORT</code>
+                        <span class="text-sm">Port number</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Running as Admin -->
+            <section id="running-as-admin" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Running as Admin</h2>
+                <p class="mb-4">To execute commands with root/admin privileges, start the server with <code>sudo</code>:</p>
+                
+                <div class="bg-[#111113] border border-white/10 rounded-2xl p-5">
+                    <pre class="font-mono text-sm"><code>sudo AI_SYSTEMASSIST_TOKEN="your-token" ai-systemassist</code></pre>
+                </div>
+            </section>
+
+            <!-- Authentication -->
+            <section id="authentication" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Authentication</h2>
+                <p class="mb-4">Every request to <code>/execute</code> must include a token using one of these methods:</p>
+                
+                <ul class="space-y-2">
+                    <li class="flex items-start gap-3"><span class="font-mono bg-white/5 px-2 rounded">X-Agent-Token</span> <span class="text-gray-400">— Preferred header</span></li>
+                    <li class="flex items-start gap-3"><span class="font-mono bg-white/5 px-2 rounded">Authorization: Bearer &lt;token&gt;</span></li>
+                    <li class="flex items-start gap-3"><span class="font-mono bg-white/5 px-2 rounded">?token=&lt;token&gt;</span> <span class="text-gray-400">— Query param (use with caution)</span></li>
+                </ul>
+            </section>
+
+            <!-- Sending Commands -->
+            <section id="sending-commands" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Sending Commands</h2>
+                
+                <h3 id="raw-body" class="font-semibold mb-2">1. Raw Body (Simplest)</h3>
+                <div class="bg-[#111113] border border-white/10 rounded-2xl p-5 mb-6">
+                    <pre class="font-mono text-sm"><code>curl -X POST -d 'ls -la /tmp' \
+  -H "X-Agent-Token: YOUR_TOKEN" \
+  http://127.0.0.1:8765/execute</code></pre>
+                </div>
+
+                <h3 id="json-body" class="font-semibold mb-2">2. JSON Body (Recommended)</h3>
+                <div class="bg-[#111113] border border-white/10 rounded-2xl p-5 mb-6">
+                    <pre class="font-mono text-sm"><code>curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "X-Agent-Token: YOUR_TOKEN" \
+  -d '{"command": "apt update", "timeout": 60, "cwd": "/tmp"}' \
+  http://127.0.0.1:8765/execute</code></pre>
+                </div>
+
+                <h3 id="query-params" class="font-semibold mb-2">3. Query Parameters</h3>
+                <div class="bg-[#111113] border border-white/10 rounded-2xl p-5">
+                    <pre class="font-mono text-sm"><code>curl "http://127.0.0.1:8765/execute?token=YOUR_TOKEN&cmd=uptime"</code></pre>
+                </div>
+            </section>
+
+            <!-- Response Format -->
+            <section id="response-format" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Response Format</h2>
+                
+                <div class="bg-[#111113] border border-white/10 rounded-2xl p-5 overflow-auto">
+                    <pre class="font-mono text-xs"><code>{
+  "command": "the command that was executed",
+  "success": true,
+  "returncode": 0,
+  "stdout": "standard output here\n",
+  "stderr": "",
+  "duration": 0.034
+}</code></pre>
+                </div>
+                
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div><span class="font-semibold">success</span> — true if returncode == 0</div>
+                    <div><span class="font-semibold">returncode</span> — Unix exit code</div>
+                    <div><span class="font-semibold">stdout / stderr</span> — Output streams</div>
+                    <div><span class="font-semibold">duration</span> — Time in seconds</div>
+                </div>
+            </section>
+
+            <!-- Security -->
+            <section id="security" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Security Best Practices</h2>
+                
+                <ul class="space-y-2 list-disc pl-6 text-gray-300">
+                    <li>Always use a strong, unique auth token</li>
+                    <li>Default binding is localhost only — do not expose publicly without protection</li>
+                    <li>Use <code>sudo</code> only when necessary</li>
+                    <li>Consider running behind a reverse proxy with TLS</li>
+                    <li>Never run on untrusted networks without additional controls</li>
+                </ul>
+            </section>
+
+            <!-- Integration -->
+            <section id="integration" class="doc-section mb-16">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Agent Integration</h2>
+                <p>AI-SystemAssist was designed to be used directly by LLM agents via simple HTTP calls. Agents can:</p>
+                
+                <ul class="list-disc pl-6 mt-3 space-y-1">
+                    <li>Explore the system with <code>ls</code>, <code>df</code>, <code>ps</code></li>
+                    <li>Run installation and configuration commands</li>
+                    <li>Inspect logs and service status</li>
+                    <li>Perform debugging and diagnostics</li>
+                </ul>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="troubleshooting" class="doc-section">
+                <h2 class="text-3xl font-display font-semibold tracking-tight mb-4">Troubleshooting</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <div class="font-medium">401 Unauthorized</div>
+                        <div class="text-sm text-gray-400">Wrong or missing token. Check your <code>X-Agent-Token</code> header.</div>
+                    </div>
+                    <div>
+                        <div class="font-medium">Connection refused</div>
+                        <div class="text-sm text-gray-400">Server is not running or bound to wrong interface.</div>
+                    </div>
+                    <div>
+                        <div class="font-medium">Permission denied</div>
+                        <div class="text-sm text-gray-400">Start the server with <code>sudo</code> for root operations.</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Simple active nav highlighting
+        function initDocsNav() {
+            const links = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.doc-section');
+            
+            function highlightActive() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    if (sectionTop <= 180) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                links.forEach(link => {
+                    link.classList.remove('active', 'text-cyan-400');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active', 'text-cyan-400');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', highlightActive);
+            highlightActive();
+            
+            // Smooth scroll
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+        }
+        
+        function copyToClipboard(button, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = button.innerHTML;
+                button.innerHTML = `<i class="fas fa-check"></i> <span>Copied</span>`;
+                setTimeout(() => {
+                    button.innerHTML = original;
+                }, 1500);
+            });
+        }
+        
+        window.onload = function() {
+            initDocsNav();
+        };
+    </script>
+</body>
+</html>

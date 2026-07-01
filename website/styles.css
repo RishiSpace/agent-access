@@ -1,0 +1,52 @@
+/* Additional styles for AI-SystemAssist landing */
+
+.command-button {
+    transition: all 0.1s ease;
+}
+
+.command-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(103, 232, 249, 0.3);
+}
+
+.terminal {
+    font-size: 13.5px;
+    line-height: 1.45;
+}
+
+.feature-card {
+    border-radius: 20px;
+}
+
+/* Subtle grid background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Demo response formatting */
+.response-line {
+    margin-bottom: 1px;
+}
+
+.json-key {
+    color: #67e8f9;
+}
+
+.json-string {
+    color: #a5f3fc;
+}
+
+.json-number {
+    color: #fde047;
+}

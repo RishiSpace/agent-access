@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-SystemAssist • Give your AI agents real shell power</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#22d3ee');
+        }
+        
+        // Tailwind script configuration
+        function setupTailwind() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .gradient-text {
+                    background: linear-gradient(90deg, #67e8f9, #22d3ee);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    line-height: 1.05;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        window.onload = function() {
+            initializeTailwind();
+            setupTailwind();
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --accent: #22d3ee;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .dark {
+            background-color: #0a0a0f;
+            color: #e5e7eb;
+        }
+
+        .section-header {
+            font-size: 2.75rem;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal {
+            background: #111113;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .feature-card {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-link {
+            transition: color 0.1s ease;
+        }
+        
+        .nav-link:hover {
+            color: #22d3ee;
+        }
+
+        .command {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .demo-terminal {
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+
+        .capability-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #22d3ee, #67e8f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0f] text-gray-200">
+    <!-- Navbar -->
+    <nav class="border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-lg fixed w-full z-50">
+        <div class="max-w-screen-xl mx-auto px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-x-3">
+                    <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-teal-400 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-robot text-[#0a0a0f] text-2xl font-bold"></i>
+                    </div>
+                    <div>
+                        <span class="font-display text-2xl font-semibold tracking-tight">AI-SystemAssist</span>
+                    </div>
+                </div>
+
+                <!-- Nav Links -->
+                <div class="hidden md:flex items-center gap-x-8 text-sm">
+                    <a href="#features" class="nav-link text-gray-300 hover:text-white font-medium">Features</a>
+                    <a href="#how" class="nav-link text-gray-300 hover:text-white font-medium">How it works</a>
+                    <a href="docs/index.html" class="nav-link text-gray-300 hover:text-white font-medium">Docs</a>
+                </div>
+
+                <div class="flex items-center gap-x-3">
+                    <a href="https://github.com/RishiSpace/agent-access" 
+                       class="hidden sm:flex items-center gap-x-2 px-4 py-2 text-sm font-medium rounded-3xl bg-white/5 hover:bg-white/10 transition-colors border border-white/10">
+                        <i class="fab fa-github"></i>
+                        <span class="font-medium">GitHub</span>
+                    </a>
+                    
+                    <a href="https://pypi.org/project/AI-SystemAssist/" 
+                       class="px-5 py-2 bg-white text-[#0a0a0f] rounded-3xl text-sm font-semibold flex items-center gap-x-2 hover:bg-white/90 transition-all">
+                        <i class="fab fa-python"></i>
+                        <span>PyPI</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="max-w-screen-xl mx-auto px-8 pt-24 pb-16">
+        <div class="max-w-3xl">
+            <h1 class="text-7xl leading-[1.05] font-display font-semibold tracking-tighter">
+                Give your AI agents<br>
+                <span class="gradient-text">real shell power.</span>
+            </h1>
+            
+            <p class="mt-6 text-2xl text-gray-400 max-w-xl">
+                A simple, secure HTTP server that lets AI agents execute commands on your machine and get structured results back.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-10">
+                <!-- Install Command -->
+                <div class="group relative flex-1 max-w-md">
+                    <div class="flex items-center bg-[#111113] border border-white/10 rounded-3xl p-1.5 pr-2">
+                        <div class="flex-1 px-4 font-mono text-sm text-emerald-300">
+                            pip install AI-SystemAssist
+                        </div>
+                        <button onclick="copyInstallCommand(this)"
+                                class="flex items-center justify-center gap-x-2 bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors px-5 py-2 rounded-[2rem] text-sm font-semibold">
+                            <i class="fas fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
+                </div>
+
+                <a href="https://pypi.org/project/AI-SystemAssist/" 
+                   target="_blank"
+                   class="flex items-center justify-center gap-x-3 bg-white hover:bg-white/90 active:bg-white transition-all text-[#0a0a0f] font-semibold px-8 h-12 rounded-3xl text-base shadow-inner">
+                    <span>View on PyPI</span>
+                    <i class="fas fa-external-link-alt text-sm"></i>
+                </a>
+            </div>
+
+            <div class="mt-6 flex items-center gap-x-4 text-sm text-gray-400">
+                <div class="flex items-center">
+                    <div class="flex -space-x-1 mr-2">
+                        <div class="w-6 h-6 bg-gray-300 rounded-full ring-2 ring-[#0a0a0f]"></div>
+                        <div class="w-6 h-6 bg-gray-400 rounded-full ring-2 ring-[#0a0a0f]"></div>
+                        <div class="w-6 h-6 bg-gray-500 rounded-full ring-2 ring-[#0a0a0f]"></div>
+                    </div>
+                    <span>Trusted by AI agents worldwide</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <div id="features" class="max-w-screen-xl mx-auto px-8 py-16 border-t border-white/10">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <div class="text-cyan-400 text-sm font-semibold tracking-widest">CAPABILITIES</div>
+                <h2 class="text-5xl font-display tracking-tight font-semibold mt-2">Built for agents.<br>Built for humans.</h2>
+            </div>
+            <a href="docs/index.html" class="hidden md:flex items-center gap-x-2 text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors">
+                Read full documentation <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Feature 1 -->
+            <div class="feature-card bg-[#111113] border border-white/10 rounded-3xl p-7 group">
+                <div class="flex items-center gap-x-4 mb-4">
+                    <div class="w-12 h-12 bg-cyan-900/30 text-cyan-400 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-terminal text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-2xl">Execute anything</h3>
+                </div>
+                <p class="text-gray-400">Run any shell command. Pipes, redirects, background processes — everything works.</p>
+                
+                <div class="mt-6 text-xs font-mono bg-black/50 rounded-xl p-3 text-emerald-400 border border-white/10">
+                    curl -X POST -d 'ls -la | grep py' ...
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-card bg-[#111113] border border-white/10 rounded-3xl p-7 group">
+                <div class="flex items-center gap-x-4 mb-4">
+                    <div class="w-12 h-12 bg-violet-900/30 text-violet-400 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-code text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-2xl">Structured output</h3>
+                </div>
+                <p class="text-gray-400">Get clean JSON back with stdout, stderr, return code, and execution duration.</p>
+                
+                <div class="mt-6 text-xs font-mono bg-black/50 rounded-xl p-3 border border-white/10 text-amber-300">
+                    { "stdout": "...", "returncode": 0, "success": true }
+                </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card bg-[#111113] border border-white/10 rounded-3xl p-7 group">
+                <div class="flex items-center gap-x-4 mb-4">
+                    <div class="w-12 h-12 bg-emerald-900/30 text-emerald-400 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-2xl">Secure by default</h3>
+                </div>
+                <p class="text-gray-400">Token-based auth. Binds to localhost by default. Supports full root access when needed.</p>
+                
+                <div class="mt-6">
+                    <div class="flex items-center gap-2 text-xs">
+                        <div class="px-3 py-1 bg-emerald-900/30 text-emerald-400 rounded-full text-xs font-medium">X-Agent-Token</div>
+                        <div class="px-3 py-1 bg-white/5 rounded-full text-xs">Bearer</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-card bg-[#111113] border border-white/10 rounded-3xl p-7 group">
+                <div class="flex items-center gap-x-4 mb-4">
+                    <div class="w-12 h-12 bg-orange-900/30 text-orange-400 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-server text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-2xl">System visibility</h3>
+                </div>
+                <p class="text-gray-400 mb-4">Perfect for agents that need to understand disk space, processes, network, and environment.</p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="feature-card bg-[#111113] border border-white/10 rounded-3xl p-7 group">
+                <div class="flex items-center gap-x-4 mb-4">
+                    <div class="w-12 h-12 bg-pink-900/30 text-pink-400 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-user-shield text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-2xl">Privilege control</h3>
+                </div>
+                <p class="text-gray-400 mb-4">Run as regular user or with full sudo/root privileges. Your choice.</p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="feature-card bg-[#111113] border border-white/10 rounded-3xl p-7">
+                <div class="flex items-center gap-x-4 mb-4">
+                    <div class="w-12 h-12 bg-blue-900/30 text-blue-400 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-link text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-2xl">Works everywhere</h3>
+                </div>
+                <p class="text-gray-400">curl, wget, Python, Node.js, or directly from your LLM agent. No special client needed.</p>
+                
+                <div class="mt-4 flex flex-wrap gap-2 text-xs">
+                    <div class="px-2.5 py-1 bg-white/5 rounded-xl">curl</div>
+                    <div class="px-2.5 py-1 bg-white/5 rounded-xl">wget</div>
+                    <div class="px-2.5 py-1 bg-white/5 rounded-xl">Python</div>
+                    <div class="px-2.5 py-1 bg-white/5 rounded-xl">+ more</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- How it works -->
+    <div id="how" class="max-w-screen-xl mx-auto px-8 py-16 border-t border-white/10">
+        <div class="text-center mb-12">
+            <div class="text-cyan-400 text-sm font-semibold tracking-[3px]">HOW IT WORKS</div>
+            <h2 class="mt-2 text-5xl font-display tracking-tight">Simple. Powerful. Agent-ready.</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            <div class="glass border border-white/10 p-7 rounded-3xl">
+                <div class="text-cyan-400 text-5xl font-display font-bold">01</div>
+                <div class="font-semibold mt-6 mb-2 text-xl">Install &amp; start</div>
+                <div class="text-gray-400 text-[15px]">
+                    Install the package and start the server with a single command. Optionally run with <span class="font-mono text-emerald-400">sudo</span> for full access.
+                </div>
+            </div>
+            
+            <div class="glass border border-white/10 p-7 rounded-3xl">
+                <div class="text-cyan-400 text-5xl font-display font-bold">02</div>
+                <div class="font-semibold mt-6 mb-2 text-xl">Send commands</div>
+                <div class="text-gray-400 text-[15px]">
+                    Your agent (or curl, Python, etc.) POSTs commands to the server with the auth token.
+                </div>
+            </div>
+            
+            <div class="glass border border-white/10 p-7 rounded-3xl">
+                <div class="text-cyan-400 text-5xl font-display font-bold">03</div>
+                <div class="font-semibold mt-6 mb-2 text-xl">Get results</div>
+                <div class="text-gray-400 text-[15px]">
+                    Receive clean JSON containing stdout, stderr, return code, and execution time. Ready for your agent to reason over.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final CTA -->
+    <div class="max-w-screen-xl mx-auto px-8 py-16 border-t border-white/10">
+        <div class="bg-gradient-to-br from-cyan-950/40 to-transparent border border-white/10 rounded-3xl p-10 md:p-14 text-center">
+            <h2 class="text-4xl font-display font-semibold tracking-tighter">Ready to give your agents real power?</h2>
+            
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div class="group relative flex items-center">
+                    <div onclick="copyInstallCommand()" 
+                         class="cursor-pointer flex items-center gap-x-3 px-7 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-3xl transition-all">
+                        <span class="font-mono">pip install AI-SystemAssist</span>
+                        <i class="fas fa-copy"></i>
+                    </div>
+                </div>
+                
+                <a href="https://pypi.org/project/AI-SystemAssist/" 
+                   target="_blank"
+                   class="px-8 py-3.5 bg-white hover:bg-white/90 transition-colors text-black font-semibold rounded-3xl flex items-center gap-x-2">
+                    <span>Checkout on PyPI</span>
+                </a>
+            </div>
+            
+            <div class="text-center mt-6 text-xs text-gray-400">
+                100% open source • Works with any LLM framework
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-t border-white/10 py-8">
+        <div class="max-w-screen-xl mx-auto px-8 text-xs text-gray-400 flex flex-col md:flex-row items-center justify-between gap-y-2">
+            <div>Built for AI agents. Used by humans.</div>
+            <div class="flex gap-x-5">
+                <a href="#" class="hover:text-white">GitHub</a>
+                <a href="https://pypi.org/project/AI-SystemAssist/" class="hover:text-white">PyPI</a>
+                <a href="#" class="hover:text-white">Documentation</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyInstallCommand(button) {
+            const command = "pip install AI-SystemAssist";
+            navigator.clipboard.writeText(command).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = `<i class="fas fa-check"></i> <span>Copied!</span>`;
+                button.disabled = true;
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.disabled = false;
+                }, 2200);
+            }).catch(() => {
+                const textArea = document.createElement("textarea");
+                textArea.value = command;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                const originalHTML = button.innerHTML;
+                button.innerHTML = `<i class="fas fa-check"></i> <span>Copied!</span>`;
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 1800);
+            });
+        }
+    </script>
+</body>
+</html>
